@@ -249,7 +249,7 @@ window.addEventListener('click',
         projectiles.push(new Projectile(canvas.width/2, canvas.height/2, 5, 'white', velocity));
 });
 
-window.addEventListener('touch', 
+window.addEventListener('touchstart', 
     (event) =>{
         const angle = Math.atan2(event.clientY - canvas.height/2, event.clientX - canvas.width/2);
 
