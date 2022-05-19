@@ -22,6 +22,8 @@ let animationId;
 let score = 0;
 let powerUps = [];
 let frames = 0;
+let backgroundParticles =[];
+
 
 function init(){
     player = new Player(x, y, 10, 'white');
@@ -33,6 +35,20 @@ function init(){
     scoreEl.innerHTML = score;
     bigScoreEl.innerHTML = score;
     frames = 0;
+    backgroundParticles = [];
+
+    const spacing = 30;
+    for( let x = 0; x < canvas.width + 15; x+=spacing){
+        for(let y = 0; y< canvas.height + 15; y+=spacing){
+            backgroundParticles.push(new BackgroundParticle({
+                position:{
+                    x: x,
+                    y: y
+                },
+                radius: 3
+            }));
+        }
+    }
 }
 
 
@@ -110,6 +126,27 @@ function animate(){
     c.fillStyle = 'rgba(0, 0, 0, 0.1)'
     c.fillRect(0, 0, canvas.width, canvas.height);
     frames++;
+
+    backgroundParticles.forEach((backgroundParticle) => {
+        backgroundParticle.draw();
+
+        const dist = Math.hypot(
+            player.x - backgroundParticle.position.x, 
+            player.y - backgroundParticle.position.y
+        );
+        if(dist <100){
+            backgroundParticle.alpha = 0;
+            if(dist > 70){
+                backgroundParticle.alpha = 0.5;
+            }
+        } else if ( dist > 100 & backgroundParticle.alpha < 0.1){
+            backgroundParticle.alpha += 0.01;
+        } else if(dist > 100 && backgroundParticle.alpha >0.1){
+            backgroundParticle.alpha -= 0.01;
+        }
+
+    });
+
     player.update();
 
     for(let k = powerUps.length -1; k >= 0; k--){
@@ -179,6 +216,7 @@ function animate(){
         //end game
         if( dist - enemy.radius - player.radius < 1){
             cancelAnimationFrame(animationId);
+            audio.death.play
             modalEl.style.display ='flex';
             bigScoreEl.innerHTML = score;
         }
@@ -203,7 +241,7 @@ function animate(){
 
                 //this is where we shrink enemy
                if(enemy.radius - 10 > 5){
-
+                    audio.damageTaken.play();
                     //increase our score
                     score += 100;
                     scoreEl.innerHTML = score;
@@ -219,13 +257,25 @@ function animate(){
                     projectiles.splice(projectileIndex, 1);
                 }, 0)
                } else{
-                //remove from the scene altogether
+                //remove from the scene if they are too small
+                audio.explode.play();
                 score +=150;
                 scoreEl.innerHTML = score;
                 createScoreLabel({position: {
                     x:projectile.x,
                     y:projectile.y
                 }, score: 150});
+                //change background particle colors
+                backgroundParticles.forEach(backgroundParticle =>{
+                    gsap.set(backgroundParticle, {
+                        color: 'white',
+                        alpha: 1
+                    })
+                    gsap.to(backgroundParticle,{
+                        color: enemy.color,
+                        alpha: 0.1
+                    })
+                })
                 setTimeout(() =>{
                     enemies.splice(index, 1);
                     projectiles.splice(projectileIndex, 1);
@@ -245,6 +295,7 @@ window.addEventListener('click',
         }
 
         projectiles.push(new Projectile(player.x, player.y, 5, 'white', velocity));
+        audio.shoot.play();
 });
 const mouse ={
     position:{
