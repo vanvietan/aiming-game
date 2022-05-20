@@ -7,14 +7,12 @@ const modalScoreEl = document.querySelector('#modalScoreEl');
 const buttonEl = document.querySelector('#buttonEl');
 const startButtonEl = document.querySelector('#startButtonEl');
 const startModalEl = document.querySelector('#startModalEl');
+const volumeUpEl = document.querySelector('#volumeUpEl');
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-const x = canvas.width / 2;
-const y = canvas.height / 2;
-
-let player = new Player(x, y, 10, 'white');
+let player;
 let projectiles = [];
 let enemies = [];
 let particles = [];
@@ -29,7 +27,9 @@ let game = {
 }
 
 function init() {
-    player = new Player(x, y, 10, 'white')
+    const x = canvas.width / 2;
+    const y = canvas.height / 2;
+    player = new Player(x, y, 10, 'white');
     projectiles = [];
     enemies = [];
     particles = [];
@@ -113,8 +113,9 @@ function createScoreLabel({ position, score }) {
     scoreLabel.style.left = position.x + 'px';
     scoreLabel.style.top = position.y + 'px';
     scoreLabel.style.userSelect = 'none';
+    scoreLabel.style.pointerEvents ='none';
     document.body.appendChild(scoreLabel);
-
+    
     gsap.to(scoreLabel, {
         opacity: 0,
         y: -30,
@@ -332,12 +333,11 @@ function animate() {
     }
 }
 
-window.addEventListener('click', (event) => {
-    if (!audio.background.playing()) {
-        audio.background.play();
-    }
+let audioInitialized = false;
+
+function shoot({x, y}){
     if (game.active) {
-        const angle = Math.atan2(event.clientY - player.y, event.clientX - player.x)
+        const angle = Math.atan2(y - player.y, x - player.x)
         const velocity = {
             x: Math.cos(angle) * 5,
             y: Math.sin(angle) * 5
@@ -346,6 +346,14 @@ window.addEventListener('click', (event) => {
 
         audio.shoot.play();
     }
+}
+
+window.addEventListener('click', (event) => {
+    if (!audio.background.playing() && !audioInitialized) {
+        audio.background.play();
+        audioInitialized = true;
+    }
+    shoot({x: event.clientX, y: event.clientY});
 })
 
 const mouse = {
@@ -358,6 +366,20 @@ addEventListener('mousemove', (event) => {
     mouse.position.x = event.clientX
     mouse.position.y = event.clientY
 })
+addEventListener('touchmove', (event) =>{
+    mouse.position.x = event.touches[0].clientX;
+    mouse.position.y = event.touches[0].clientY;
+})
+
+window.addEventListener('touchstart', (event) =>{
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
+
+    mouse.position.x = event.touches[0].clientX;
+    mouse.position.y = event.touches[0].clientY;
+    shoot({x, y});
+});
+
 
 // restart game
 buttonEl.addEventListener('click', () => {
@@ -395,6 +417,22 @@ startButtonEl.addEventListener('click', () => {
     })
 });
 
+let audioInitialized2 = false;
+// mute everything
+volumeUpEl.addEventListener('click', () => {
+    if(!audioInitialized2 || !audio.background.playing()){
+        audio.background.play();
+        audioInitialized2 = true;
+        for( let key in audio){
+            audio[key].mute(false);
+        }
+    } else {
+        audio.background.pause();
+        for( let key in audio){
+            audio[key].mute(true);
+        }
+    }   
+  });
 window.addEventListener('keydown', (event) => {
     switch (event.key) {
         case 'd':
@@ -411,3 +449,11 @@ window.addEventListener('keydown', (event) => {
             break;
     }
 });
+
+window.addEventListener('resize', () =>{
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    init();
+});
+
