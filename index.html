@@ -1,25 +1,21 @@
 <style>
-  body {
-    margin: 0;
-    font-family: sans-serif;
-    background-color: black;
-  }
+    body {
+        margin: 0;
+        font-family: sans-serif;
+        background-color: black;
+    }
 </style>
-<div
-  style="
+<div style="
     position: absolute;
     color: white;
     padding: 8px;
     font-size: 14px;
     user-select: none;
-  "
->
-  <span>Score: <span id="scoreEl">0</span></span>
+  ">
+    <span>Score: <span id="scoreEl">0</span></span>
 </div>
 
-<div
-  id="modalEl"
-  style="
+<div id="modalEl" style="
     display: none;
     position: absolute;
     background-color: white;
@@ -31,19 +27,13 @@
     width: 100%;
     text-align: center;
     border-radius: 5px;
-  "
->
-  <label style="font-size: 14px; color: gray">Game Over</label>
-  <h1
-    id="modalScoreEl"
-    style="font-size: 48px; margin-bottom: 0; margin-top: 8px"
-  >
-    0
-  </h1>
-  <p style="margin: 0; font-size: 14px; color: gray">Points</p>
-  <button
-    id="buttonEl"
-    style="
+  ">
+    <label style="font-size: 14px; color: gray">Game Over</label>
+    <h1 id="modalScoreEl" style="font-size: 48px; margin-bottom: 0; margin-top: 8px">
+        0
+    </h1>
+    <p style="margin: 0; font-size: 14px; color: gray">Points</p>
+    <button id="buttonEl" style="
       margin-top: 12px;
       background-color: blue;
       border: none;
@@ -51,15 +41,12 @@
       padding: 8px 16px;
       border-radius: 5px;
       cursor: pointer;
-    "
-  >
-    Restart Game
-  </button>
+    ">
+        Restart Game
+    </button>
 </div>
 
-<div
-  id="startModalEl"
-  style="
+<div id="startModalEl" style="
     position: absolute;
     background-color: white;
     top: 50%;
@@ -70,15 +57,12 @@
     width: 100%;
     text-align: center;
     border-radius: 5px;
-  "
->
-  <h1 style="font-size: 24px; margin-bottom: 0; margin-top: 8px">
-    Base Defense Game
-  </h1>
+  ">
+    <h1 style="font-size: 24px; margin-bottom: 0; margin-top: 8px">
+        Base Defense Game
+    </h1>
 
-  <button
-    id="startButtonEl"
-    style="
+    <button id="startButtonEl" style="
       margin-top: 12px;
       background-color: blue;
       border: none;
@@ -86,26 +70,19 @@
       padding: 8px 16px;
       border-radius: 5px;
       cursor: pointer;
-    "
-  >
-    Start
-  </button>
+    ">
+        Start
+    </button>
 </div>
 
 <canvas></canvas>
 
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
-  integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.2/gsap.min.js"
-  integrity="sha512-kVlGhj2qFy+KBCFuvjBJTGUMxbdqJKs4yK2jh0e0VPhWUPiPC87bzm4THmaaIee3Oj7j6sDpTTgm2EPPiESqBg=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
+    integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.2/gsap.min.js"
+    integrity="sha512-kVlGhj2qFy+KBCFuvjBJTGUMxbdqJKs4yK2jh0e0VPhWUPiPC87bzm4THmaaIee3Oj7j6sDpTTgm2EPPiESqBg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="./js/audio.js"></script>
 <script src="./js/classes.js"></script>
 <script src="./index.js"></script>
