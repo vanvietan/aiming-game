@@ -25,7 +25,7 @@ const audio = {
         html5: true
     }),
     background: new Howl({
-        src: './audio/Blinding_lights.mp3',
+        src: './audio/Less.mp3',
         volume: 0.1,
         loop: true,
         rate: 1
